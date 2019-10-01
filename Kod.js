@@ -32,16 +32,24 @@ function myFunction() {
   var title = createTitle(data, "kons");
   var desc = createDescription(data, "kons");
 
-  if(!collisionDetection(main_calendar, start, end, data)){
-    return;
+  var subject = "";
+  var message = "";
+
+  if(collisionDetection(main_calendar, start, end, data)){
+    var event = main_calendar.createEvent(title, start, end, {description: desc});
+    subject = "Bokningsbekräftelse grupprummet";
+    message = "Du har bokat grupprummet mellan ";
+    message += start.getHours() + ":" + start.getMinutes();
+    message += " och ";
+    message += end.getHours() + ":" + end.getMinutes();
+    message += " den ";
+    message += start.getDate() + "/" + start.getMonth()+1;
+    message += ".\n\nOm du inte kommer nyttja din bokning, kontakta GK genom att svara på detta mejl.";
+    message += "\n\n//FRum genom en robot";
+
   }
 
-  var event = main_calendar.createEvent(title, start, end, {description: desc});
-
-
-
-
-  //sendMail(data[1], data[0]);
+  sendMail(data[EMAIL], subject, message);
 
 }
 
@@ -60,7 +68,6 @@ function collisionDetection(calendar, start, end, data){
 
 
   events = calendar.getEvents(start, end);
-  Logger.log(events);
   if(events.length > 0){
     return false;
   }
@@ -160,9 +167,9 @@ function getEndDateTime(date, starttime, endtime){
 }
 
 
-function sendMail(address, message){
+function sendMail(address, subject, message){
 
-  MailApp.sendEmail(address, "Bokningsbekräftelse konsulatet", message);
+  MailApp.sendEmail(address, "gk@f.kth.se", subject, message);
 
 }
 
