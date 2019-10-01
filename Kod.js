@@ -16,11 +16,11 @@ var car_id = "bilen";
 
 function myFunction() {
 
-  var main_calendar = CalendarApp.getCalendarById("fysiksektionen.se_1adpg5v95b63rtq4mqbr80ffe4@group.calendar.google.com");
+  var main_calendar = CalendarApp.getCalendarById("fysiksektionen.se_3936363138313338363039@resource.calendar.google.com");
 
   var data = getData();
 
-  var resources = data[RESOURCES];
+  //var resources = data[RESOURCES];
   var date = data[DATE];
   var start = data[STARTTIME];
   var end = data[ENDTIME];
@@ -32,15 +32,12 @@ function myFunction() {
   var title = createTitle(data, "kons");
   var desc = createDescription(data, "kons");
 
+  if(!collisionDetection(main_calendar, start, end, data)){
+    return;
+  }
+
   var event = main_calendar.createEvent(title, start, end, {description: desc});
 
-  var calendars = resources.split(", ");
-  for(i=0; i<calendars.length; i++){
-
-    var cal = getCalendar(calendars[i]);
-    cal.Events.insert(event, cal.getId());
-
-  }
 
 
 
@@ -59,7 +56,18 @@ function main(){
 }
 
 
+function collisionDetection(calendar, start, end, data){
 
+
+  events = calendar.getEvents(start, end);
+  Logger.log(events);
+  if(events.length > 0){
+    return false;
+  }
+
+  return true;
+
+}
 
 
 function createResourceIdentifyer(string_resources, calendar){
@@ -86,10 +94,10 @@ function createResourceIdentifyer(string_resources, calendar){
 
 function createTitle(data, calendar){
 
-  var string = "[";
-  string += createResourceIdentifyer(data[RESOURCES], calendar);
-  string += "] ";
-  string += data[DESCRIPTION];
+//  var string = "[";
+//  string += createResourceIdentifyer(data[RESOURCES], calendar);
+//  string += "] ";
+  var string = data[DESCRIPTION];
 
   return string;
 
@@ -98,8 +106,8 @@ function createTitle(data, calendar){
 function createDescription(data, calendar){
 
   var string = "";
-  string += createResourceIdentifyer(data[RESOURCES], calendar);
-  string += " är bokad av ";
+  //string += createResourceIdentifyer(data[RESOURCES], calendar);
+  string += "Grupprummet är bokat av ";
   string += data[NAME];
   string += " (";
   string += data[BRANCH];
@@ -107,29 +115,6 @@ function createDescription(data, calendar){
   string += data[DESCRIPTION];
 
   return string;
-
-}
-
-
-function getCalendar(resource){
-
-  if(resource == "allmänutrymmet"){
-    return CalendarApp.getCalendarById("fysiksektionen.se_3130353639323131393437@resource.calendar.google.com");
-  }
-  if(resource == "grupprummet"){
-    return CalendarApp.getCalendarById("fysiksektionen.se_3936363138313338363039@resource.calendar.google.com");
-  }
-  if(resource == "konssoffan"){
-    return CalendarApp.getCalendarById("fysiksektionen.se_3233323937373330373233@resource.calendar.google.com");
-  }
-  if(resource == "köket"){
-    return CalendarApp.getCalendarById("fysiksektionen.se_3637373133313135383039@resource.calendar.google.com");
-  }
-  if(resource == car_id){
-    //return CalendarApp.getCalendarById("fysiksektionen.se_3637373133313135383039@resource.calendar.google.com");
-  }
-
-  return null;
 
 }
 
