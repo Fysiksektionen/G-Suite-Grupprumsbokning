@@ -1,3 +1,6 @@
+// Bokning av grupprummet via formuläret på hemsidan
+// Kodat av Jonas Nylund GK 2019 & Teo Elmfeldt FUL 2019
+
 
 var TIMESTAMP = 0;
 var NAME = 1;
@@ -11,7 +14,6 @@ var DESCRIPTION = 8;
 var EXTRA = 9;
 
 var car_id = "bilen";
-
 
 
 function myFunction() {
@@ -32,8 +34,10 @@ function myFunction() {
   var title = createTitle(data, "kons");
   var desc = createDescription(data, "kons");
 
-  var subject = "";
-  var message = "";
+  var subject = "Bokning misslyckades";
+  var message = "Din bokning av grupprummet krockar med en tidigare bokning, och har därför nekats.\n";
+  message += "Om detta verkar fel, kontakta FRum genom att svara på detta mejl.\n\n//FRum genom en robot";
+
 
   if(collisionDetection(main_calendar, start, end, data)){
     var event = main_calendar.createEvent(title, start, end, {description: desc});
@@ -43,7 +47,7 @@ function myFunction() {
     message += " och ";
     message += end.getHours() + ":" + end.getMinutes();
     message += " den ";
-    message += start.getDate() + "/" + start.getMonth()+1;
+    message += start.getDate() + "/" + (start.getMonth()+1).toString();
     message += ".\n\nOm du inte kommer nyttja din bokning, kontakta GK genom att svara på detta mejl.";
     message += "\n\n//FRum genom en robot";
 
