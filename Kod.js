@@ -16,6 +16,7 @@ var EXTRA = 9;
 var car_id = "bilen";
 
 
+
 function myFunction() {
 
   var main_calendar = CalendarApp.getCalendarById("fysiksektionen.se_3936363138313338363039@resource.calendar.google.com");
@@ -80,34 +81,8 @@ function collisionDetection(calendar, start, end, data){
 
 }
 
-
-function createResourceIdentifyer(string_resources, calendar){
-
-  var resources = string_resources.split(", ");
-
-  if(calendar == car_id){
-    return "Bilen";
-  }
-
-  if(resources.indexOf(car_id) > -1){
-    resources.splice(resources.indexOf(car_id), 1);
-  }
-
-  if(resources.length == 4){
-    return "Hela Konsulatet";
-  }
-
-  return resources.map(function(element){
-    return element.charAt(0).toUpperCase() + element.slice(1);
-  }).join(", ");
-
-}
-
 function createTitle(data, calendar){
 
-//  var string = "[";
-//  string += createResourceIdentifyer(data[RESOURCES], calendar);
-//  string += "] ";
   var string = data[DESCRIPTION];
 
   return string;
@@ -117,7 +92,6 @@ function createTitle(data, calendar){
 function createDescription(data, calendar){
 
   var string = "";
-  //string += createResourceIdentifyer(data[RESOURCES], calendar);
   string += "Grupprummet är bokat av ";
   string += data[NAME];
   string += " (";
